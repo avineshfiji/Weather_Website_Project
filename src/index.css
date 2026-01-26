@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+body {
+  background: #020024;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+.footer_bg {
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhARmu6b5S3pCutLgyPt413-vZLMBOe9j5cqJo1OHQjM1KdvpVPCFDRDwkkmiUDnhq5Wa_Chzvwqot3F-25mM5AA0CZsdWqaIPrpzo_BnT1A9lnbmTBwI4fa1p9JHjocF2YBFNKAG5THkRAX2eHQf__Zh3Y3cpAApAoPmAZIhcxt9VuvZ0ygXRS3enkLDRMs2hC7AV7wrcpUonayh6j4amLMnMCKX-x5ee6ZE20Bcngbzb_Ftk-9apCtabVc6BlLkWRZpxMhOAcaAp");
+}
+.glass-effect {
+  background: rgba(40, 46, 57, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bg-gradient-main {
+  background: linear-gradient(135deg, #101622 0%, #1a1a2e 40%, #2b6cee 100%);
+}
