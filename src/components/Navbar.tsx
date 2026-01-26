@@ -21,24 +21,19 @@ export default function Navbar() {
         </div>
         <div className="flex flex-1 justify-end gap-8">
           <div className="hidden md:flex items-center gap-9">
-            <a
+            {/* <a
               className="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors"
               href="#"
             >
               Home
-            </a>
-            <a
+            </a> */}
+            {/* <a
               className="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors"
               href="#"
             >
               Maps
-            </a>
-            <a
-              className="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors"
-              href="#"
-            >
-              News
-            </a>
+            </a> */}
+
             <a
               className="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors"
               href="#"
@@ -46,9 +41,9 @@ export default function Navbar() {
               Settings
             </a>
           </div>
-          <button className="flex items-center justify-center rounded-lg h-10 w-10 bg-white/10 hover:bg-white/20 text-white transition-all">
+          {/* <button className="flex items-center justify-center rounded-lg h-10 w-10 bg-white/10 hover:bg-white/20 text-white transition-all">
             <span className="material-symbols-outlined">person</span>
-          </button>
+          </button> */}
         </div>
       </header>
     </>

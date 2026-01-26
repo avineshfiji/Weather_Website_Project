@@ -15,3 +15,8 @@ export interface weatherInfo {
   icon: string;
   description: string;
 }
+export interface LocationState {
+  location: string;
+  updateLocation: (newLocation: string) => void;
+  clearLocation: () => void;
+}

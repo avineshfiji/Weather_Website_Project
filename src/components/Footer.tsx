@@ -1,11 +1,15 @@
+import { useLocation } from "../store/weatherStore.ts";
+
 export default function Footer() {
+  const location = useLocation((state) => state.location);
+
   return (
     <footer className="w-full px-10 lg:px-40 py-10">
       <div className="glass-effect rounded-xl p-1 flex items-center overflow-hidden h-32 relative group cursor-pointer">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-50 transition-opacity footer_bg"
           data-alt="Satellite map view of city landscape"
-          data-location="London"
+          data-location={location}
         ></div>
         <div className="relative z-10 w-full flex items-center justify-between px-8">
           <div>
@@ -21,7 +25,7 @@ export default function Footer() {
       </div>
       <div className="mt-8 text-center text-white/30 text-xs">
         © 2024 WeatherWise Dashboard. All data provided for demonstration
-        purposes.
+        purposes. v1.1
       </div>
     </footer>
   );
