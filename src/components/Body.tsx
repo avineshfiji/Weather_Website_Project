@@ -1,21 +1,35 @@
 import { useState } from "react";
-import { getWeatherDescription } from "../utils/weather.ts";
 import { useWeather } from "../hooks/useWeather.ts";
-import type { weatherInfo } from "../types/weather_types";
-import { useLocation } from "../store/weatherStore.ts";
+
+import { useLocation, useUnit, useWDetails } from "../store/weatherStore.ts";
 import Spinner from "./spiner.tsx";
+import Forcast from "./Forcast.tsx";
+import { getIcon } from "../utils/getIcon.ts";
 
 export default function Body() {
-  // const [location, setLocation] = useState("Fiji");
   const location = useLocation((state) => state.location);
   const updateLocation = useLocation((state) => state.updateLocation);
-  // const clearLocation = useLocation((state) => state.clearLocation);
+  useWeather(location);
+  const Unit = useUnit((state) => state.Unit);
 
-  const { data, loading, error } = useWeather(location);
+  const handleUseCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      updateLocation(`${latitude},${longitude}`);
+    });
+  };
+
+  handleUseCurrentLocation();
+
+  const data = useWDetails((state) => state.data);
+  const loading = useWDetails((state) => state.loading);
+  const error = useWDetails((state) => state.error);
+
+  const Cel = "℃";
+  const Feh = "℉";
+
   const [searchQuery, setSearchQuery] = useState("");
-  const { description, icon }: weatherInfo = getWeatherDescription(
-    data?.current.temp_c,
-  );
+
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchQuery(e.target.value);
   }
@@ -79,34 +93,61 @@ export default function Body() {
           <h1 className="text-white tracking-light text-[40px] font-bold leading-tight px-4">
             {data?.location.country}
           </h1>
+          <div className="mt-4 mr-4 px-6 py-2 rounded-full bg-[#2b6cee]/20 border border-[#2b6cee]/30 text-[#2b6cee] text-sm font-medium">
+            {data?.location.name}
+          </div>
           <div className="flex items-center gap-4 mt-2">
             <span
               className="material-symbols-outlined mt-2 text-yellow-400"
               style={{ fontSize: "4rem" }}
             >
-              {icon}
+              {getIcon(data?.current.condition.text.trim())}
             </span>
             <h1 className="text-white tracking-tight text-[84px] font-bold leading-none">
-              {data?.current.temp_c}°
+              {Unit == "C" ? data?.current.temp_c : data?.current.temp_f}
+
               <span className="ml-1" style={{ fontSize: "60px" }}>
-                C
+                {Unit == "C" ? Cel : Feh}
               </span>
             </h1>
           </div>
           <p className="text-white/80 text-xl font-medium leading-normal pt-4 px-4">
-            {description}
+            {data?.current.condition.text}
           </p>
           <div className="flex">
             <div className="mt-4 mr-4 px-4 py-2 rounded-full bg-[#2b6cee]/20 border border-[#2b6cee]/30 text-[#2b6cee] text-sm font-medium">
-              Feels-like {data?.current.feelslike_c}℃
+              Feels-like{" "}
+              {Unit == "C"
+                ? data?.current.feelslike_c
+                : data?.current.feelslike_f}
+              {Unit == "C" ? Cel : Feh}
             </div>
             <div className="mt-4 mr-4 px-4 py-2 rounded-full bg-[#2b6cee]/20 border border-[#2b6cee]/30 text-[#2b6cee] text-sm font-medium">
               humidity {data?.current.humidity}%
             </div>
             <div className="mt-4 mr-4 px-4 py-2 rounded-full bg-[#2b6cee]/20 border border-[#2b6cee]/30 text-[#2b6cee] text-sm font-medium">
-              humidity {data?.current.wind_kph}Km/Hr
+              wind-speed {data?.current.wind_kph}Km/Hr
             </div>
           </div>
+        </div>
+      </div>
+      <Forcast />
+      <div className="glass-effect rounded-xl p-1 flex items-center overflow-hidden w-300 mt-15 mb-0 h-32 relative group cursor-pointer">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-50 transition-opacity footer_bg"
+          data-alt="Satellite map view of city landscape"
+          data-location={location}
+        ></div>
+        <div className="relative z-10 w-full flex items-center justify-between px-8">
+          <div>
+            <h4 className="text-lg font-bold">Weather Radar</h4>
+            <p className="text-white/60 text-sm">
+              View interactive precipitation map
+            </p>
+          </div>
+          <span className="material-symbols-outlined text-primary">
+            arrow_forward_ios
+          </span>
         </div>
       </div>
     </main>

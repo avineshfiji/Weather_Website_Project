@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import type { WeatherData } from "../types/weather_types";
+import { useEffect } from "react";
+import { useWDetails } from "../store/weatherStore.ts";
+import { useForcastDays } from "../store/weatherStore.ts";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
-const URL = import.meta.env.VITE_URL;
+const URL = import.meta.env.VITE_7_DAY_URL;
 
 export function useWeather(location: string) {
-  const [data, setData] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const Days = useForcastDays((state) => state.Days);
+  const setData = useWDetails((state) => state.setData);
+  const setLoading = useWDetails((state) => state.setLoading);
+  const setError = useWDetails((state) => state.setError);
 
-  if (!API_KEY || !URL) console.log("error, missing api_key or url");
   useEffect(() => {
     if (!location) return;
     const controller = new AbortController();
@@ -18,13 +19,15 @@ export function useWeather(location: string) {
       const startTime = Date.now();
       try {
         setError(null);
-
         setLoading(true);
         setData(null);
 
-        const res = await fetch(`${URL}?key=${API_KEY}&q=${location}&aqi=no`, {
-          signal: controller.signal,
-        });
+        const res = await fetch(
+          `${URL}?key=${API_KEY}&q=${location}&days=${Days}&aqi=no&alerts=no`,
+          {
+            signal: controller.signal,
+          },
+        );
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }
@@ -36,11 +39,11 @@ export function useWeather(location: string) {
         if (remainingTime > 0) {
           await new Promise((resolve) => setTimeout(resolve, remainingTime));
         }
+        console.log(fetchData);
         setData(fetchData);
       } catch (err: unknown) {
         if (err instanceof Error && err.name === "AbortError") return;
-        // IMPORTANT: Still wait minimum time even for errors
-        // This prevents flicker on error states too
+
         const elapsedTime = Date.now() - startTime;
         const remainingTime = MIN_LOADING_TIME - elapsedTime;
 
@@ -56,10 +59,11 @@ export function useWeather(location: string) {
         setLoading(false);
       }
     };
+
     fetchWeather();
+
     return () => {
       controller.abort();
     };
-  }, [location]);
-  return { data, loading, error };
+  }, [location, setData, setError, setLoading, Days]);
 }

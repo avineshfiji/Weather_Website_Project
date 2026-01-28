@@ -1,31 +1,9 @@
-import { useLocation } from "../store/weatherStore.ts";
-
 export default function Footer() {
-  const location = useLocation((state) => state.location);
-
   return (
     <footer className="w-full px-10 lg:px-40 py-10">
-      <div className="glass-effect rounded-xl p-1 flex items-center overflow-hidden h-32 relative group cursor-pointer">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30 group-hover:opacity-50 transition-opacity footer_bg"
-          data-alt="Satellite map view of city landscape"
-          data-location={location}
-        ></div>
-        <div className="relative z-10 w-full flex items-center justify-between px-8">
-          <div>
-            <h4 className="text-lg font-bold">Weather Radar</h4>
-            <p className="text-white/60 text-sm">
-              View interactive precipitation map
-            </p>
-          </div>
-          <span className="material-symbols-outlined text-primary">
-            arrow_forward_ios
-          </span>
-        </div>
-      </div>
-      <div className="mt-8 text-center text-white/30 text-xs">
+      <div className=" text-center text-white/30 text-xs">
         © 2024 WeatherWise Dashboard. All data provided for demonstration
-        purposes. v1.1
+        purposes. v1.5
       </div>
     </footer>
   );
