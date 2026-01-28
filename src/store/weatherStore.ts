@@ -7,19 +7,8 @@ import type {
   WeatherUnitStore,
 } from "../types/weather_types";
 
-function GetLocation() {
-  let locationST: string = "";
-  navigator.geolocation.getCurrentPosition((position) => {
-    const { latitude, longitude } = position.coords;
-    locationST = `${latitude},${longitude}`;
-  });
-  if (locationST) return locationST;
-
-  return "usa";
-}
-
 const initialState = {
-  location: GetLocation(),
+  location: "",
 };
 
 // Store for Location

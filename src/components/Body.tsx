@@ -13,10 +13,16 @@ export default function Body() {
   const Unit = useUnit((state) => state.Unit);
 
   const handleUseCurrentLocation = () => {
+    let locationST: string = "";
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords;
-      updateLocation(`${latitude},${longitude}`);
+      locationST = `${latitude},${longitude}`;
     });
+    if (locationST.trim() == "") {
+      updateLocation("USA");
+    } else {
+      updateLocation(locationST);
+    }
   };
 
   handleUseCurrentLocation();
